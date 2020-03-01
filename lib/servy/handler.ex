@@ -41,13 +41,13 @@ defmodule Servy.Handler do
     |> handle_file(conv)
   end
 
-  def route(%Conv{path: path} = conv) do
-    %{conv | status: 404, resp_body: "No #{path} here!"}
-  end
-
   def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
     params = Map.put(conv.params, "id", id)
     BearController.delete(conv, params)
+  end
+
+  def route(%Conv{path: path} = conv) do
+    %{conv | status: 404, resp_body: "No #{path} here!"}
   end
 
   def handle_file({:ok, content}, conv) do

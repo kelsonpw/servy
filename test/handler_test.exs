@@ -96,7 +96,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 72\r
+    Content-Length: 74\r
     \r
     <h1>Show Bear</h1>
     <p>
@@ -143,7 +143,7 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 102\r
+    Content-Length: 104\r
     \r
     <h1>Clark's Wildthings Refuge</h1>
 
@@ -180,8 +180,30 @@ defmodule HandlerTest do
     assert_without_whitespace(response, expected_response)
   end
 
+  test "DELETE /bears/1" do
+    request = """
+    DELETE /bears/1 HTTP/1.1\r
+    Host: example.com\r
+    User-Agent: ExampleBrowser/1.0\r
+    Accept: */*\r
+    \r
+    """
+
+    response = handle(request)
+
+    expected_response = """
+    HTTP/1.1 403 Forbidden\r
+    Content-Type: text/html\r
+    Content-Length: 30\r
+    \r
+    Deleting bear #1 is forbidden!
+    """
+
+    assert_without_whitespace(response, expected_response)
+  end
+
   defp assert_without_whitespace(a, b) do
-    remove_whitespace(a) == remove_whitespace(b)
+    assert(remove_whitespace(a) == remove_whitespace(b))
   end
 
   defp remove_whitespace(text) do
