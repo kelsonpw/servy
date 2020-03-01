@@ -1,12 +1,11 @@
 defmodule Servy.Handler do
-  @pages_path Path.expand("../../pages", __DIR__)
-
   alias Servy.Conv
   alias Servy.BearController
   alias Servy.Api
 
   import Servy.Plugins, only: [rewrite_path: 1, log: 1, track: 1, put_content_length: 1]
   import Servy.Parser, only: [parse: 1]
+  import Servy.View, only: [render_html: 2, render_markdown: 2]
 
   def handle(request) do
     request
@@ -27,6 +26,10 @@ defmodule Servy.Handler do
     Api.BearController.index(conv)
   end
 
+  def route(%Conv{method: "POST", path: "/api/bears"} = conv) do
+    Api.BearController.create(conv, conv.params)
+  end
+
   def route(%Conv{method: "GET", path: "/bears"} = conv) do
     BearController.index(conv)
   end
@@ -41,10 +44,7 @@ defmodule Servy.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/about"} = conv) do
-    @pages_path
-    |> Path.join("about.html")
-    |> File.read()
-    |> handle_file(conv)
+    render_html(conv, "about.html")
   end
 
   def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
@@ -52,20 +52,12 @@ defmodule Servy.Handler do
     BearController.delete(conv, params)
   end
 
+  def route(%Conv{method: "GET", path: "/pages/" <> name} = conv) do
+    render_markdown(conv, "#{name}.md")
+  end
+
   def route(%Conv{path: path} = conv) do
     %{conv | status: 404, resp_body: "No #{path} here!"}
-  end
-
-  def handle_file({:ok, content}, conv) do
-    %{conv | status: 200, resp_body: content}
-  end
-
-  def handle_file({:error, :enoent}, conv) do
-    %{conv | status: 404, resp_body: "File not found!"}
-  end
-
-  def handle_file({:error, reason}, conv) do
-    %{conv | status: 500, resp_body: "File error: #{reason}"}
   end
 
   def format_response(%Conv{} = conv) do
