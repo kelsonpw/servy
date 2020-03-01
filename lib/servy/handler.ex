@@ -5,7 +5,7 @@ defmodule Servy.Handler do
   alias Servy.BearController
   alias Servy.Api
 
-  import Servy.Plugins, only: [rewrite_path: 1, log: 1, track: 1]
+  import Servy.Plugins, only: [rewrite_path: 1, log: 1, track: 1, put_content_length: 1]
   import Servy.Parser, only: [parse: 1]
 
   def handle(request) do
@@ -15,6 +15,7 @@ defmodule Servy.Handler do
     |> log
     |> route
     |> track
+    |> put_content_length
     |> format_response
   end
 
@@ -70,8 +71,8 @@ defmodule Servy.Handler do
   def format_response(%Conv{} = conv) do
     """
     HTTP/1.1 #{Conv.full_status(conv)}
-    Content-Type: #{conv.resp_content_type}
-    Content-Length: #{String.length(conv.resp_body)}
+    Content-Type: #{conv.resp_headers["Content-Type"]}
+    Content-Length: #{conv.resp_headers["Content-Length"]}
 
     #{conv.resp_body}
     """
