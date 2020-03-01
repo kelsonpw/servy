@@ -66,3 +66,4 @@ defmodule Servy.HttpServer do
     :gen_tcp.close(client_socket)
   end
 end
+
