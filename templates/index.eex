@@ -1,6 +1,6 @@
-<h1>All The Bears!</h1>
+<h1>All The Todos!</h1>
 <ul>
-  <%= for bear <- bears do %>
-    <li><%= bear.name %> - <%= bear.type %></li>
+  <%= for todo <- todos do %>
+    <li><%= todo.name %> - <%= todo.type %></li>
   <% end %>
 </ul>

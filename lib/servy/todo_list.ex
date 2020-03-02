@@ -1,24 +1,24 @@
-defmodule Servy.Wildthings do
-  alias Servy.Bear
+defmodule Servy.TodoList do
+  alias Servy.Todo
 
   @data_path Path.expand("../../db", __DIR__)
 
-  def list_bears do
+  def list_todos do
     @data_path
-    |> Path.join("bears.json")
+    |> Path.join("todos.json")
     |> read_json()
-    |> Poison.decode!(as: %{"bears" => [%Bear{}]})
-    |> Map.get("bears")
+    |> Poison.decode!(as: %{"todos" => [%Todo{}]})
+    |> Map.get("todos")
   end
 
-  def get_bear(id) when is_integer(id) do
-    Enum.find(list_bears(), fn bear -> bear.id == id end)
+  def get_todo(id) when is_integer(id) do
+    Enum.find(list_todos(), fn todo -> todo.id == id end)
   end
 
-  def get_bear(id) when is_binary(id) do
+  def get_todo(id) when is_binary(id) do
     id
     |> String.to_integer()
-    |> get_bear()
+    |> get_todo()
   end
 
   defp read_json(source) do

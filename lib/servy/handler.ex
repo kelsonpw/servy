@@ -1,6 +1,6 @@
 defmodule Servy.Handler do
   alias Servy.Conv
-  alias Servy.BearController
+  alias Servy.TodoController
   alias Servy.Api
 
   import Servy.Plugins, only: [rewrite_path: 1, log: 1, track: 1, put_content_length: 1]
@@ -23,38 +23,38 @@ defmodule Servy.Handler do
     %{conv | status: 200, resp_body: "Awake"}
   end
 
-  def route(%Conv{method: "GET", path: "/wildthings"} = conv) do
+  def route(%Conv{method: "GET", path: "/random"} = conv) do
     %{conv | status: 200, resp_body: "Bears, Lions, Tigers"}
   end
 
-  def route(%Conv{method: "GET", path: "/api/bears"} = conv) do
-    Api.BearController.index(conv)
+  def route(%Conv{method: "GET", path: "/api/todos"} = conv) do
+    Api.TodoController.index(conv)
   end
 
-  def route(%Conv{method: "POST", path: "/api/bears"} = conv) do
-    Api.BearController.create(conv, conv.params)
+  def route(%Conv{method: "POST", path: "/api/todos"} = conv) do
+    Api.TodoController.create(conv, conv.params)
   end
 
-  def route(%Conv{method: "GET", path: "/bears"} = conv) do
-    BearController.index(conv)
+  def route(%Conv{method: "GET", path: "/todos"} = conv) do
+    TodoController.index(conv)
   end
 
-  def route(%Conv{method: "GET", path: "/bears/" <> id} = conv) do
+  def route(%Conv{method: "GET", path: "/todos/" <> id} = conv) do
     params = Map.put(conv.params, "id", id)
-    BearController.show(conv, params)
+    TodoController.show(conv, params)
   end
 
-  def route(%Conv{method: "POST", path: "/bears"} = conv) do
-    BearController.create(conv, conv.params)
+  def route(%Conv{method: "POST", path: "/todos"} = conv) do
+    TodoController.create(conv, conv.params)
   end
 
   def route(%Conv{method: "GET", path: "/about"} = conv) do
     render_html(conv, "about.html")
   end
 
-  def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
+  def route(%Conv{method: "DELETE", path: "/todos/" <> id} = conv) do
     params = Map.put(conv.params, "id", id)
-    BearController.delete(conv, params)
+    TodoController.delete(conv, params)
   end
 
   def route(%Conv{method: "GET", path: "/pages/" <> name} = conv) do

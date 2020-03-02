@@ -1,9 +1,9 @@
-defmodule Servy.Api.BearController do
+defmodule Servy.Api.TodoController do
   alias Servy.Conv
 
   def index(%Conv{} = conv) do
     json =
-      Servy.Wildthings.list_bears()
+      Servy.TodoList.list_todos()
       |> Poison.encode!()
 
     conv = Conv.put_resp_content_type(conv, "application/json")
@@ -12,6 +12,6 @@ defmodule Servy.Api.BearController do
   end
 
   def create(%Conv{} = conv, %{"name" => name, "type" => type}) do
-    %{conv | status: 201, resp_body: "Created a #{type} bear named #{name}!"}
+    %{conv | status: 201, resp_body: "Created a #{type} todo named #{name}!"}
   end
 end

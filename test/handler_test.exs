@@ -3,9 +3,9 @@ defmodule HandlerTest do
 
   import Servy.Handler, only: [handle: 1]
 
-  test "GET /wildthings" do
+  test "GET /random" do
     request = """
-    GET /wildthings HTTP/1.1\r
+    GET /random HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -25,9 +25,9 @@ defmodule HandlerTest do
     assert_without_whitespace(response, expected_response)
   end
 
-  test "GET /bears" do
+  test "GET /todos" do
     request = """
-    GET /bears HTTP/1.1\r
+    GET /todos HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -39,21 +39,21 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 355\r
+    Content-Length: 447\r
     \r
-    <h1>All The Bears!</h1>
+    <h1>All The Todos!</h1>
 
     <ul>
-      <li>Brutus - Grizzly</li>
-      <li>Iceman - Polar</li>
-      <li>Kenai - Grizzly</li>
-      <li>Paddington - Brown</li>
-      <li>Roscoe - Panda</li>
-      <li>Rosie - Black</li>
-      <li>Scarface - Grizzly</li>
-      <li>Smokey - Black</li>
-      <li>Snow - Polar</li>
-      <li>Teddy - Brown</li>
+      <li>Clean the kitchen - Chore</li>
+      <li>Complete tickets - Work</li>
+      <li>Go buy groceries - Chore</li>
+      <li>Go on a camping trip - Fun</li>
+      <li>Go to the movies - Fun</li>
+      <li>Go to the park - Fun</li>
+      <li>Learn Vue.js - Learn</li>
+      <li>Pull ticket from backlog - Work</li>
+      <li>Shovel the driveway - Chore</li>
+      <li>Study GraphQL - Learn</li>
     </ul>
     """
 
@@ -82,9 +82,9 @@ defmodule HandlerTest do
     assert_without_whitespace(response, expected_response)
   end
 
-  test "GET /bears/1" do
+  test "GET /todos/1" do
     request = """
-    GET /bears/1 HTTP/1.1\r
+    GET /todos/1 HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -96,20 +96,20 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 74\r
+    Content-Length: 82\r
     \r
-    <h1>Show Bear</h1>
+    <h1>Show Todo</h1>
     <p>
-    Is Teddy hibernating? <strong>true</strong>
+    Is Go buy groceries complete? <strong>true</strong>
     </p>
     """
 
     assert_without_whitespace(response, expected_response)
   end
 
-  test "GET /wildlife" do
+  test "GET /stuff" do
     request = """
-    GET /wildlife HTTP/1.1\r
+    GET /stuff HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -143,9 +143,9 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: text/html\r
-    Content-Length: 104\r
+    Content-Length: 101\r
     \r
-    <h1>Clark's Wildthings Refuge</h1>
+    <h1>Kelson's Random Refuge</h1>
 
     <blockquote>
     When we contemplate the whole globe...
@@ -155,16 +155,16 @@ defmodule HandlerTest do
     assert_without_whitespace(response, expected_response)
   end
 
-  test "POST /bears" do
+  test "POST /todos" do
     request = """
-    POST /bears HTTP/1.1\r
+    POST /todos HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
     Content-Type: application/x-www-form-urlencoded\r
     Content-Length: 21\r
     \r
-    name=Baloo&type=Brown
+    name=Take the dog on a walk&type=Chore
     """
 
     response = handle(request)
@@ -172,17 +172,17 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 201 Created\r
     Content-Type: text/html\r
-    Content-Length: 33\r
+    Content-Length: 50\r
     \r
-    Created a Brown bear named Baloo!
+    Created a Chore todo named Take the dog on a walk!
     """
 
     assert_without_whitespace(response, expected_response)
   end
 
-  test "DELETE /bears/1" do
+  test "DELETE /todos/1" do
     request = """
-    DELETE /bears/1 HTTP/1.1\r
+    DELETE /todos/1 HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -196,15 +196,15 @@ defmodule HandlerTest do
     Content-Type: text/html\r
     Content-Length: 30\r
     \r
-    Deleting bear #1 is forbidden!
+    Deleting todo #1 is forbidden!
     """
 
     assert_without_whitespace(response, expected_response)
   end
 
-  test "GET /api/bears" do
+  test "GET /api/todos" do
     request = """
-    GET /api/bears HTTP/1.1\r
+    GET /api/todos HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
@@ -216,33 +216,33 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 200 OK\r
     Content-Type: application/json\r
-    Content-Length: 605\r
+    Content-Length: 667\r
     \r
-    [{"type":"Brown","name":"Teddy","id":1,"hibernating":true},
-     {"type":"Black","name":"Smokey","id":2,"hibernating":false},
-     {"type":"Brown","name":"Paddington","id":3,"hibernating":false},
-     {"type":"Grizzly","name":"Scarface","id":4,"hibernating":true},
-     {"type":"Polar","name":"Snow","id":5,"hibernating":false},
-     {"type":"Grizzly","name":"Brutus","id":6,"hibernating":false},
-     {"type":"Black","name":"Rosie","id":7,"hibernating":true},
-     {"type":"Panda","name":"Roscoe","id":8,"hibernating":false},
-     {"type":"Polar","name":"Iceman","id":9,"hibernating":true},
-     {"type":"Grizzly","name":"Kenai","id":10,"hibernating":false}]
+    [{"type":"Chore","name":"Go buy groceries","id":1,"complete":true},
+    {"type":"Fun","name":"Go on a camping trip","id":2,"complete":false},
+    {"type":"Chore","name":"Clean the kitchen","id":3,"complete":false},
+    {"type":"Fun","name":"Go to the park","id":4,"complete":true},
+    {"type":"Chore","name":"Shovel the driveway","id":5,"complete":false},
+    {"type":"Fun","name":"Go to the movies","id":6,"complete":false},
+    {"type":"Work","name":"Pull ticket from backlog","id":7,"complete":true},
+    {"type":"Learn","name":"Study GraphQL","id":8,"complete":false},
+    {"type":"Work","name":"Complete tickets","id":9,"complete":true},
+    {"type":"Learn","name":"Learn Vue.js","id":10,"complete":false}]
     """
 
     assert_without_whitespace(response, expected_response)
   end
 
-  test "POST /api/bears" do
+  test "POST /api/todos" do
     request = """
-    POST /api/bears HTTP/1.1\r
+    POST /api/todos HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r
     Content-Type: application/json\r
     Content-Length: 21\r
     \r
-    {"name": "Breezly", "type": "Polar"}
+    {"name": "Mow the lawn", "type": "Chore"}
     """
 
     response = handle(request)
@@ -250,9 +250,9 @@ defmodule HandlerTest do
     expected_response = """
     HTTP/1.1 201 Created\r
     Content-Type: text/html\r
-    Content-Length: 35\r
+    Content-Length: 40\r
     \r
-    Created a Polar bear named Breezly!
+    Created a Chore todo named Mow the lawn!
     """
 
     assert_without_whitespace(response, expected_response)

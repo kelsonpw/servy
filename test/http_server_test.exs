@@ -8,7 +8,7 @@ defmodule HttpServerTest do
     spawn(HttpServer, :start, [4000])
 
     request = """
-    GET /wildthings HTTP/1.1\r
+    GET /random HTTP/1.1\r
     Host: example.com\r
     User-Agent: ExampleBrowser/1.0\r
     Accept: */*\r

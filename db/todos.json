@@ -1,0 +1,59 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "name": "Go buy groceries",
+      "type": "Chore",
+      "complete": true
+    },
+    {
+      "id": 2,
+      "name": "Go on a camping trip",
+      "type": "Fun"
+    },
+    {
+      "id": 3,
+      "name": "Clean the kitchen",
+      "type": "Chore"
+    },
+    {
+      "id": 4,
+      "name": "Go to the park",
+      "type": "Fun",
+      "complete": true
+    },
+    {
+      "id": 5,
+      "name": "Shovel the driveway",
+      "type": "Chore"
+    },
+    {
+      "id": 6,
+      "name": "Go to the movies",
+      "type": "Fun"
+    },
+    {
+      "id": 7,
+      "name": "Pull ticket from backlog",
+      "type": "Work",
+      "complete": true
+    },
+    {
+      "id": 8,
+      "name": "Study GraphQL",
+      "type": "Learn"
+    },
+    {
+      "id": 9,
+      "name": "Complete tickets",
+      "type": "Work",
+      "complete": true
+    },
+    {
+      "id": 10,
+      "name": "Learn Vue.js",
+      "type": "Learn"
+    }
+  ]
+}
+
