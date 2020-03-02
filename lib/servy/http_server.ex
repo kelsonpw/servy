@@ -23,7 +23,9 @@ defmodule Servy.HttpServer do
 
     IO.puts("⚡️  Connection accepted!\n")
 
-    serve(client_socket)
+    spawn(fn ->
+      serve(client_socket)
+    end)
 
     accept_loop(listen_socket)
   end
@@ -34,6 +36,8 @@ defmodule Servy.HttpServer do
   """
 
   def serve(client_socket) do
+    IO.puts("Working on #{inspect self()}!")
+
     client_socket
     |> read_request()
     |> Servy.Handler.handle()
@@ -66,4 +70,3 @@ defmodule Servy.HttpServer do
     :gen_tcp.close(client_socket)
   end
 end
-
